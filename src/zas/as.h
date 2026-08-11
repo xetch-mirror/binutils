@@ -42,13 +42,34 @@ typedef struct {
     uint32_t pos;
 } codebuf_t;
 
+/* ---- freestanding replacements — no libc ---- */
+
+static int my_strcmp(const char *a, const char *b) {
+    while (*a && (*a == *b)) { a++; b++; }
+    return (unsigned char)*a - (unsigned char)*b;
+}
+
+static void my_strcpy(char *dst, const char *src) {
+    while ((*dst++ = *src++));
+}
+
+static void my_strncpy(char *dst, const char *src, int n) {
+    int i = 0;
+    while (i < n && src[i]) { dst[i] = src[i]; i++; }
+    while (i < n) { dst[i] = '\0'; i++; }
+}
+
+static int my_isdigit(char c) { return c >= '0' && c <= '9'; }
+static int my_isalpha(char c) { return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
+static int my_isalnum(char c) { return my_isdigit(c) || my_isalpha(c); }
+
+static long my_atol(const char *s) {
+    long result = 0;
+    int neg = 0;
+    if (*s == '-') { neg = 1; s++; }
+    while (my_isdigit(*s)) { result = result * 10 + (*s - '0'); s++; }
+    return neg ? -result : result;
+}
+
 /* lexer.c */
-void lex(const char *src, token_stream_t *out);
-
-/* parser.c */
-void assemble(token_stream_t *toks, codebuf_t *code,
-              symtab_t *syms, reloctab_t *relocs);
-
-int reg_id(const char *name); /* returns -1 if not a register */
-
-#endif
+void
