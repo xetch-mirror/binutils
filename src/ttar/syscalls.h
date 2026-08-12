@@ -263,7 +263,7 @@ static long my_syscall4(long num, long a1, long a2, long a3, long a4) {
     register long a2 __asm__("a2") = a3;
     register long a3 __asm__("a3") = a4;
     register long a7 __asm__("a7") = num;
-    __asm__ __volatile__("ecall" : "=r"(ret) : "r"(a0), "r"(a1), "r"(a2), "r"(a3), "r"(r7) : "memory");
+    __asm__ __volatile__("ecall" : "=r"(ret) : "r"(a0), "r"(a1), "r"(a2), "r"(a3), "r"(a7) : "memory");
 #endif
     return ret;
 }
