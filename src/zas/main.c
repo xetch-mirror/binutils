@@ -28,13 +28,13 @@ static long read_whole_file(const char *path, char *buf, long max_size) {
 
 int main(int argc, char **argv) {
     if (argc < 3) {
-        print_str("Usage: as <input.asm> <output.o>\n");
+        print_str("usage: as <input.asm> <output.o>\n");
         return 1;
     }
 
     long src_len = read_whole_file(argv[1], src_buf, MAX_SRC_SIZE - 1);
     if (src_len < 0) {
-        print_str("as: could not open input file\n");
+        print_str("zas: could not open input file\n");
         return 1;
     }
 
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 
     int out_fd = sys_open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if (out_fd < 0) {
-        print_str("as: could not open output file\n");
+        print_str("zas: could not open output file\n");
         return 1;
     }
 
